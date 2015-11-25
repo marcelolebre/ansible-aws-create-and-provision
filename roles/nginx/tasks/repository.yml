@@ -1,0 +1,11 @@
+---
+  - name: add nginx repository
+    sudo: true
+    action: apt_repository repo='{{ item }} http://nginx.org/packages/ubuntu/ precise nginx' state=present
+    with_items:
+      - "deb"
+      - "deb-src"
+
+  - name: add nginx server key
+    sudo: true
+    apt_key: url=http://nginx.org/keys/nginx_signing.key

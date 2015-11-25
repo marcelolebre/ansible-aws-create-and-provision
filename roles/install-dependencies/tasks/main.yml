@@ -1,0 +1,61 @@
+---
+    - name: Export locale
+      shell: "echo $LANGUAGE"
+      environment:
+        LANGUAGE: en_US.UTF-8
+        LANG: en_US.UTF-8
+        LC_ALL: en_US.UTF-8
+
+    - name: Setting locale name
+      locale_gen: name=en_US.UTF-8 state=present
+      sudo: true
+
+    - name: Reconfiguring Locales
+      command: dpkg-reconfigure locales
+      sudo: true
+
+    - name: Update ubuntu cache
+      apt: update_cache=true
+      sudo: true
+
+    - name: Upgrade ubuntu
+      apt: upgrade=full
+      sudo: true
+
+    - name: Install essential packages
+      sudo: true
+      apt: pkg={{ item }} state=present
+      with_items:
+        - build-essential
+        - libssl-dev
+        - libyaml-dev
+        - git
+        - git-core
+        - htop
+        - libtool
+        - libxslt-dev
+        - libxml2-dev
+        - libpq-dev
+        - gawk
+        - curl
+        - pngcrush
+        - imagemagick
+        - libmagickwand-dev
+        - software-properties-common
+        - zlib1g-dev
+        - libreadline6-dev
+        - libxslt1-dev
+        - libpq-dev
+        - libcurl3
+        - libcurl3-gnutls
+        - libcurl4-openssl-dev
+        - g++
+        - ruby-execjs
+        - libmagickwand-dev
+        - make
+        - zlib1g-dev
+        - libreadline-dev
+        - libsqlite3-dev
+        - sqlite3
+        - python-software-properties
+        - libffi-dev

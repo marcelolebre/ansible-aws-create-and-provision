@@ -1,0 +1,14 @@
+---
+- name: Setup Common
+  hosts: launched
+  remote_user: ubuntu
+  gather_facts: True
+  roles:
+    - common
+    - nginx
+    - ruby
+    - redis
+    - unicorn
+    - bundler
+    - project-structure
+    - server-configuration

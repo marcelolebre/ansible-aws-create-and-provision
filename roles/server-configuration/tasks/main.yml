@@ -1,0 +1,42 @@
+---
+  # - name: Create Unicorn config file
+  #   template: src='unicorn.rb.j2' dest='/var/www/<PROJECT_NAME>/config/unicorn.rb' group=ubuntu owner=ubuntu mode=0644
+  #   sudo: true
+
+  - name: Create Unicorn Script file
+    template: src='unicorn.sh.j2' dest='/etc/init.d/unicorn' group=ubuntu owner=ubuntu mode=0644
+    sudo: true
+
+  - name: Changing Unicorn Script file permissions
+    command: chmod +x /etc/init.d/unicorn
+
+  - name: Create Unicorn Default Configs file
+    template: src='unicorn-defaults.j2' dest='/etc/default/unicorn' group=ubuntu owner=ubuntu mode=0644
+    sudo: true
+
+  - name: Creates /etc/nginx/sites-available directory
+    file: path=/etc/nginx/sites-available state=directory group=ubuntu owner=ubuntu
+    sudo: true
+
+  - name: Creates /etc/nginx/sites-enabled directory
+    file: path=/etc/nginx/sites-enabled state=directory group=ubuntu owner=ubuntu
+    sudo: true
+
+  - name: Configure Nginx sites-available file
+    template: src='<PROJECT_NAME>-dev.j2' dest='/etc/nginx/sites-available/<PROJECT_NAME>-dev' group=ubuntu owner=ubuntu mode=0644
+    sudo: true
+
+  - name: Create Nginx sites-enabled symlink file
+    command: ln -s /etc/nginx/sites-available/<PROJECT_NAME>-dev /etc/nginx/sites-enabled
+
+  - name: Generate new SSH Key
+    command:  ssh-keygen -f ~/.ssh/id_rsa -t rsa -N '' -C info@<PROJECT_NAME>.com
+
+  - command: cat ~/.ssh/id_rsa.pub
+    register: ssh_key
+
+  - debug: var=ssh_key.stdout_lines
+
+  - name: Restarting NGINX
+    command: /etc/init.d/nginx restart
+    sudo: true

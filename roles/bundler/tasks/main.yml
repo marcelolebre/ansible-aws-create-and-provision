@@ -1,0 +1,4 @@
+---
+  - name: Install bundler
+    sudo: true
+    command: gem install bundler

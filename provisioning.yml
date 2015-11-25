@@ -1,0 +1,3 @@
+---
+- include: new-instance.yml
+- include: setup-common.yml

@@ -1,0 +1,10 @@
+---
+- name: Instance creation
+  hosts: localhost
+  connection: local
+
+  vars_files:
+    - vars/aws_credentials.yml
+
+  roles:
+    - aws

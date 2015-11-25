@@ -1,0 +1,8 @@
+---
+  - name: "update apt cache"
+    apt:  update_cache=true
+    sudo: true
+
+  - name: install redis
+    apt: pkg=redis-server state=present
+    sudo: true

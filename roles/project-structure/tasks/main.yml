@@ -1,0 +1,27 @@
+---
+- name: Creating wwww directory
+  file: path=/var/www state=directory owner=ubuntu group=ubuntu
+  sudo: true
+
+- name: Creates <PROJECT_NAME> directory
+  file: path=/var/www/<PROJECT_NAME> state=directory
+
+- name: Creates <PROJECT_NAME>/shared directory
+  file: path=/var/www/<PROJECT_NAME>/shared state=directory
+
+- name: Creates <PROJECT_NAME>/pids directory
+  file: path=/var/www/<PROJECT_NAME>/shared/pids state=directory
+
+- name: Creates <PROJECT_NAME>/sockets directory
+  file: path=/var/www/<PROJECT_NAME>/shared/sockets state=directory
+
+- name: Creates <PROJECT_NAME>/config directory
+  file: path=/var/www/<PROJECT_NAME>/shared/config state=directory
+
+- name: Create default files .env  database  secrets.yml
+  template: src={{ item.src }} dest={{ item.dest }} group=ubuntu owner=ubuntu mode=0644
+  with_items:
+    - { src: 'database.yml.j2', dest: '/var/www/<PROJECT_NAME>/shared/config/database.yml' }
+    - { src: '.env.j2',         dest: '/var/www/<PROJECT_NAME>/shared/.env' }
+    - { src: 'secrets.yml.j2',  dest: '/var/www/<PROJECT_NAME>/shared/config/secrets.yml' }
+  sudo: true

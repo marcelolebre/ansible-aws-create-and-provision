@@ -1,0 +1,27 @@
+---
+  - name: 'SHITY KEY'
+    shell: gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
+    sudo: true
+
+  - name: install rvm system-wide
+    shell: curl -sSL https://get.rvm.io | bash -s stable
+    sudo: true
+
+  - name: install ruby
+    command: /usr/local/rvm/bin/rvmsudo /usr/local/rvm/bin/rvm install --default {{ ruby.version }} creates=/usr/local/rvm/rubies/{{ ruby.version }}
+
+  - name: create directory structure
+    file: path={{ item.path }} state=directory group={{system.group}} owner={{system.user}} mode=0755 recurse=yes
+    with_items:
+      - { path: '/servers/etc/unicorn'}
+    sudo: true
+
+  - name: unicorn configuration
+    template: src={{ item.src }} dest={{ item.dest }} group=root owner=root mode=0755
+    with_items:
+      - { src: 'unicorn.init.j2', dest: '/etc/init.d/unicorn' }
+    sudo: true
+
+  - name: add user to rvm group
+    user: name=ubuntu groups='rvm,admin' append=yes state=present
+    sudo: true

@@ -1,0 +1,14 @@
+---
+  - name: Install unicorn
+    sudo: true
+    apt: name=unicorn
+
+# Current GEMFILE requires version 2.9.3 of kgio but unicorn installs 2.10 which is incompatible with the GEMFILE.lock
+# Forcing v 2.9.3
+  - name: Install unicorn dependency Gem
+    sudo: true
+    command: gem install kgio -v 2.9.3
+
+  - name: Install unicorn Gem
+    sudo: true
+    command: gem install unicorn -v 4.8.3

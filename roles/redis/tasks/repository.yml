@@ -1,0 +1,4 @@
+---
+  - name: add redis oficial ppa
+    action: apt_repository repo=ppa:rwky/redis state=present
+    sudo: true

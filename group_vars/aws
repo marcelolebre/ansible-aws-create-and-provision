@@ -1,0 +1,4 @@
+aws_credentials:
+  aws_url: <aws-url>
+  aws_access_key_id: <aws-access-key-id>
+  aws_region: eu-west-1
